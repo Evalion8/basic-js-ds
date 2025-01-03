@@ -8,17 +8,17 @@ const { Node } = require('../extensions/list-tree.js');
  */
 class BinarySearchTree {
   constructor() {
-    this.root = null;
+    this._root = null;
   }
 
   root() {
-    return this.root;
+    return this._root;
   }
 
   add(data) {
-    const node = this.root;
+    const node = this._root;
     if (node === null) {
-      this.root = new Node(data);
+      this._root = new Node(data);
       return;
     } else {
       const searchTree = function (node) {
@@ -45,23 +45,18 @@ class BinarySearchTree {
   }
 
   has(data) {
-    return searchIn(this.root, data);
-    function searchIn(node, data) {
-      if (!node) {
-        return false;
-      }
-      if (node.data === data) {
-        return true;
-      }
-
+    return searchData(this.head, data);
+    function searchData(node, data) {
+      if (!node) return false;
+      if (node.data === data) return true;
       return data < node.data
-        ? searchIn(node.left, data)
-        : searchIn(node.right, data);
+        ? searchData(node.left, data)
+        : searchData(node.right, data);
     }
   }
 
   find(data) {
-    let current = this.root;
+    let current = this._root;
     while (current.data !== data) {
       if (data < current.data) {
         current = current.left;
@@ -101,24 +96,26 @@ class BinarySearchTree {
         node.right = removeNode(node.right, data);
         return node;
       }
-      this.root = removeNode(this.root, data);
+      this._root = removeNode(this._root, data);
     };
   }
 
   min() {
-    let current = this.root;
-    while (current.left) {
-      current = current.left;
+    if (!this.head) return null;
+    let currentNode = this.head;
+    while (currentNode.left) {
+      currentNode = currentNode.left;
     }
-    return current.data;
+    return currentNode.data;
   }
 
   max() {
-    let current = this.root;
-    while (current.right !== null) {
-      current = current.right;
+    if (!this.head) return null;
+    let currentNode = this.head;
+    while (currentNode.right) {
+      currentNode = currentNode.right;
     }
-    return current.data;
+    return currentNode.data;
   }
 }
 
